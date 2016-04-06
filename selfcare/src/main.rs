@@ -79,11 +79,9 @@ fn split_lines(string: String) -> Vec<String> {
 /// # Return value
 /// ()
 fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
-    let num_adj = adj.len();
-    let num_noun = nouns.len();
-    let ind_adj = rand::thread_rng().gen_range(0, num_adj);
-    let ind_noun = rand::thread_rng().gen_range(0, num_noun);
-    println!("You are a{} {}", adj[ind_adj], nouns[ind_noun])
+    let adjective = rand::thread_rng().choose(&adj).unwrap();
+    let noun = rand::thread_rng().choose(&nouns).unwrap();
+    println!("You are a{} {}", adjective, noun)
 }
     
 
