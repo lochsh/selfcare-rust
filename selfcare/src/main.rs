@@ -9,8 +9,6 @@ use rand::Rng;
 fn read_lines(file_path: &Path) -> Vec<String> { 
     /// Takes file path, returns a vector of strings, each string a line in file.
     ///
-    /// This function uses \n as newline delimiter to split on.
-    ///
     /// # Arguments
     /// * `file_path: &Path` - The path to the file to read
     ///
@@ -58,7 +56,7 @@ fn read_file(mut file: &File) -> String {
 }
 
 fn split_lines(string: &String) -> Vec<String> {
-    /// Split a string on \n and return vector of resulting strings.
+    /// Split a string on newlines and return vector of resulting strings.
     ///
     /// # Arguments
     /// * `string: &String` - string to be split
