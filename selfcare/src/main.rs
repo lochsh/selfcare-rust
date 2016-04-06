@@ -14,8 +14,7 @@ use rand::Rng;
 /// # Return value
 /// Returns `Vec<String>` where each string is a line in the file
 fn read_lines(file_path: &Path) -> Vec<String> { 
-    let file = open_file(file_path);
-    let content = read_file(&file);
+    let content = read_file(file_path);
     let lines = split_lines(&content);
     lines
 }
@@ -29,7 +28,7 @@ fn read_lines(file_path: &Path) -> Vec<String> {
 /// Returns `File` corresponding to `file_path`
 fn open_file(file_path: &Path) -> File {
     let display = file_path.display();
-    let mut file = match File::open(&file_path) {
+    let file = match File::open(file_path) {
         Err(why) => panic!("couldn't open {}: {}", display,
                            Error::description(&why)),
         Ok(file) => file,
@@ -37,14 +36,15 @@ fn open_file(file_path: &Path) -> File {
     file
 }
 
-/// Takes `File`, returns string containing the file's content.
+/// Takes `file path, returns string containing the file's content.
 ///
 /// # Arguments
-/// * `mut file: &File` - The file to read
+/// * `file_path: &Path` - The path of file to read
 ///
 /// # Return value
 /// Returns `String` containing contents of file
-fn read_file(mut file: &File) -> String {
+fn read_file(file_path: &Path) -> String {
+    let mut file = open_file(file_path);
     let mut content = String::new();
     match file.read_to_string(&mut content) {
         Err(why) => panic!("couldn't read file: {}",
