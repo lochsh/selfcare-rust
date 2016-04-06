@@ -87,6 +87,10 @@ fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
 }
     
 
+/// Print random inspiring message in format "You are a <adjective> <noun>".
+///
+/// Takes command line args `adj_file` and `noun_file`, respectively the paths
+/// to the file containing the adjectives and the containing the nouns.
 fn main() {
     let args: Vec<String> = env::args().collect();
     let adj_file = Path::new(&args[1]);
