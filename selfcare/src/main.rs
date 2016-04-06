@@ -29,7 +29,7 @@ fn read_lines(file_path: &Path) -> Vec<String> {
 fn open_file(file_path: &Path) -> File {
     let display = file_path.display();
     let file = match File::open(file_path) {
-        Err(why) => panic!("couldn't open {}: {}", display,
+        Err(why) => panic!("Couldn't open file {}: {}", display,
                            Error::description(&why)),
         Ok(file) => file,
     };
@@ -48,7 +48,7 @@ fn read_file(file_path: &Path) -> String {
     let display = file_path.display();
     let mut content = String::new();
     match file.read_to_string(&mut content) {
-        Err(why) => panic!("couldn't read file {}: {}", display,
+        Err(why) => panic!("Couldn't read file {}: {}", display,
                            Error::description(&why)),
         Ok(content) => content,
     };
