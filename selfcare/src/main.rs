@@ -92,7 +92,11 @@ fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
 /// Takes command line args `adj_file` and `noun_file`, respectively the paths
 /// to the file containing the adjectives and the containing the nouns.
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let mut args: Vec<String> = env::args().collect();
+    if args.len() == 1 {
+        args.push("adjectives.txt".to_string());
+        args.push("nouns.txt".to_string());
+    }
     let adj_file = Path::new(&args[1]);
     let noun_file = Path::new(&args[2]);
     let adj = read_lines(adj_file);
