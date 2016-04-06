@@ -1,10 +1,10 @@
 extern crate rand;
 
-use std::error::Error;
-use std::io::prelude::*;
-use std::fs::File;
-use std::path::Path;
 use rand::Rng;
+use std::error::Error;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 /// Takes file path, returns a vector of strings, each string a line in file.
 ///
