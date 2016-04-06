@@ -1,7 +1,10 @@
+extern crate rand;
+
 use std::error::Error;
 use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
+use rand::Rng;
 
 fn read_lines(file_path: &Path) -> Vec<String> { 
     let file = open_file(file_path);
@@ -26,7 +29,7 @@ fn read_file(mut file: &File) -> String {
     match file.read_to_string(&mut content) {
         Err(why) => panic!("couldn't read file: {}",
                            Error::description(&why)),
-        Ok(_) => print!("{}", content),
+        Ok(content) => content,
     };
     content
 }
@@ -37,9 +40,20 @@ fn split_lines(string: &String) -> Vec<String> {
         .map(ToOwned::to_owned)
         .collect()    
 }
+
+fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
+    let num_adj = adj.len();
+    let num_noun = nouns.len();
+    let ind_adj = rand::thread_rng().gen_range(0, num_adj);
+    let ind_noun = rand::thread_rng().gen_range(0, num_noun);
+    println!("You are a{} {}", adj[ind_adj], nouns[ind_noun])
+}
     
 
 fn main() {
-    let file_path = Path::new("../self-ca.re/adjectives.txt");
-    println!("{:?}", read_lines(&file_path));
+    let adj_file = Path::new("adjectives.txt");
+    let noun_file = Path::new("nouns.txt");
+    let adj = read_lines(adj_file);
+    let nouns = read_lines(noun_file);
+    selfcare(adj, nouns)
 }
