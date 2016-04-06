@@ -15,7 +15,7 @@ use rand::Rng;
 /// Returns `Vec<String>` where each string is a line in the file
 fn read_lines(file_path: &Path) -> Vec<String> { 
     let content = read_file(file_path);
-    split_lines(&content)
+    split_lines(content)
 }
 
 /// Takes file path, returns corresponding `File` object.
@@ -56,11 +56,11 @@ fn read_file(file_path: &Path) -> String {
 /// Split a string on newlines and return vector of resulting strings.
 ///
 /// # Arguments
-/// * `string: &String` - string to be split
+/// * `string: String` - string to be split
 ///
 /// # Return value
 /// Returns `Vec<String>`
-fn split_lines(string: &String) -> Vec<String> {
+fn split_lines(string: String) -> Vec<String> {
     string
         .lines()
         .map(ToOwned::to_owned)
