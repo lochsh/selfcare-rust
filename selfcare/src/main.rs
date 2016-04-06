@@ -74,7 +74,8 @@ fn split_lines(string: &String) -> Vec<String> {
 fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
     /// Chooses random adjective and noun from file, combines into message.
     ///
-    /// This function does not return the message, but prints it to stdout
+    /// This function does not return the message, but prints it to stdout.
+    /// The message is in the format "You are a <adjective> <noun>."
     ///
     /// # Arguments
     /// * `adj: Vec<String>` - vector of adjectives
