@@ -44,9 +44,10 @@ fn open_file(file_path: &Path) -> File {
 /// Returns `String` containing contents of file
 fn read_file(file_path: &Path) -> String {
     let mut file = open_file(file_path);
+    let display = file_path.display();
     let mut content = String::new();
     match file.read_to_string(&mut content) {
-        Err(why) => panic!("couldn't read file: {}",
+        Err(why) => panic!("couldn't read file {}: {}", display,
                            Error::description(&why)),
         Ok(content) => content,
     };
