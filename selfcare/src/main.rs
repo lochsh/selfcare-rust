@@ -1,6 +1,7 @@
 extern crate rand;
 
 use rand::Rng;
+use std::env;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
@@ -87,8 +88,9 @@ fn selfcare(adj: Vec<String>, nouns: Vec<String>) {
     
 
 fn main() {
-    let adj_file = Path::new("adjectives.txt");
-    let noun_file = Path::new("nouns.txt");
+    let args: Vec<String> = env::args().collect();
+    let adj_file = Path::new(&args[1]);
+    let noun_file = Path::new(&args[2]);
     let adj = read_lines(adj_file);
     let nouns = read_lines(noun_file);
     selfcare(adj, nouns)
