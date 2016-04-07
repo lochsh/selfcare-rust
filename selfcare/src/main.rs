@@ -32,8 +32,8 @@ fn random_pair<Foo, Bar, F, T>(foos: &[Foo],
                                bars: &[Bar], f: F) -> T 
                                where F: FnOnce(&Foo, &Bar) -> T {
     let mut rng = rand::thread_rng();
-    let foo = rng.choose(foos).expect("No adjective found");
-    let bar = rng.choose(bars).expect("No noun found");
+    let foo = rng.choose(foos).expect("No entries found for first part of random pair");
+    let bar = rng.choose(bars).expect("No entries found for second part of random pair");
     f(foo, bar)
 }
 
