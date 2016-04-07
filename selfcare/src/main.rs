@@ -4,53 +4,37 @@ use rand::Rng;
 use std::env;
 use std::error::Error;
 use std::fs::File;
+use std::io::BufReader;
 use std::io::prelude::*;
 use std::path::Path;
 
-fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> { 
-    let content = read_file(file_path);
-    split_lines(&content)
-}
-
-fn open_file<P>(file_path: P) -> File where P: AsRef<Path> {
+fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> {
     let file_path = file_path.as_ref();
-    match File::open(file_path) {
+    let file = match File::open(file_path) {
         Err(why) => panic!("Couldn't open file {}: {}",
                            file_path.display(),
-                           Error::description(&why)),
+                           why.description()),
         Ok(file) => file,
-    }
+    };
+
+    let buf = BufReader::new(file);
+    buf.lines().map(|line| {
+        match line {
+            Ok(l) => l,
+            Err(why) => panic!("Couldn't read file {}: {}",
+                               file_path.display(),
+                               why.description()),
+        }
+    }).collect()
 }
 
-fn read_file<P>(file_path: P) -> String where P: AsRef<Path> {
-    let file_path = file_path.as_ref();
-    let mut file = open_file(file_path);
-    let mut content = String::new();
-
-    if let Err(why) = file.read_to_string(&mut content) {
-        panic!("Couldn't read file {}: {}",
-               file_path.display(),
-               why.description());
-    }
-    content
-}
-
-fn split_lines(string: &str) -> Vec<String> {
-    string
-        .lines()
-        .map(ToOwned::to_owned)
-        .collect()
-}
-
-/// Chooses random adjective and noun from file, combines into message.
-///
-/// This function does not return the message, but prints it to stdout.
-/// The message is in the format "You are a <adjective> <noun>."
-fn selfcare<S>(adj: &[S], nouns: &[S]) where S: std::fmt::Display {
+fn random_pair<Foo, Bar, F, T>(foos: &[Foo],
+                               bars: &[Bar], f: F) -> T 
+                               where F: FnOnce(&Foo, &Bar) -> T {
     let mut rng = rand::thread_rng();
-    let adjective = rng.choose(adj).expect("No adjectives found!");
-    let noun = rng.choose(nouns).expect("No nouns found!");
-    println!("You are a{} {}", adjective, noun)
+    let foo = rng.choose(foos).expect("No adjective found");
+    let bar = rng.choose(bars).expect("No noun found");
+    f(foo, bar)
 }
 
 /// Print random inspiring message in format "You are a <adjective> <noun>".
@@ -65,5 +49,5 @@ fn main() {
     }
     let adj = read_lines(&args[1]);
     let nouns = read_lines(&args[2]);
-    selfcare(&adj, &nouns)
+    random_pair(&adj, &nouns, |adjective, noun| println!("You are a{} {}", adjective, noun));
 }
