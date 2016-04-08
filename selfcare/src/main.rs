@@ -12,8 +12,7 @@ fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> {
     let file_path = file_path.as_ref();
     let file = match File::open(file_path) {
         Err(why) => panic!("Couldn't open file {}: {}",
-                           file_path.display(),
-                           why.description()),
+                           file_path.display(), why.description()),
         Ok(file) => file,
     };
 
@@ -22,8 +21,7 @@ fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> {
         match line {
             Ok(l) => l,
             Err(why) => panic!("Couldn't read file {}: {}",
-                               file_path.display(),
-                               why.description()),
+                               file_path.display(), why.description()),
         }
     }).collect()
 }
@@ -49,5 +47,6 @@ fn main() {
     }
     let adj = read_lines(&args[1]);
     let nouns = read_lines(&args[2]);
-    random_pair(&adj, &nouns, |adjective, noun| println!("You are a{} {}", adjective, noun));
+    random_pair(&adj, &nouns,
+                |adjective, noun| println!("You are a{} {}", adjective, noun));
 }
