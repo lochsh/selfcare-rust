@@ -16,8 +16,7 @@ fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> {
         Ok(file) => file,
     };
 
-    let buf = BufReader::new(file);
-    buf.lines().map(|line| {
+    BufReader::new(file).lines().map(|line| {
         match line {
             Ok(l) => l,
             Err(why) => panic!("Couldn't read file {}: {}",
@@ -26,19 +25,19 @@ fn read_lines<P>(file_path: P) -> Vec<String> where P: AsRef<Path> {
     }).collect()
 }
 
-fn random_pair<Foo, Bar, F, T>(foos: &[Foo],
-                               bars: &[Bar], f: F) -> T 
-                               where F: FnOnce(&Foo, &Bar) -> T {
+
+fn random_pair<'a, T>(foos: &'a[T], bars: &'a[T]) -> (&'a T, &'a T) {
     let mut rng = rand::thread_rng();
     let foo = rng.choose(foos).expect("No entries found for first part of random pair");
     let bar = rng.choose(bars).expect("No entries found for second part of random pair");
-    f(foo, bar)
+    (foo, bar)
 }
+
 
 /// Print random inspiring message in format "You are a <adjective> <noun>".
 ///
-/// Takes command line args `adj_file` and `noun_file`, respectively the paths
-/// to the file containing the adjectives and the containing the nouns.
+/// Takes two command line args: the paths to the file containing the
+/// adjectives and the file containing the nouns.
 fn main() {
     let mut args: Vec<_> = env::args().collect();
     if args.len() == 1 {
@@ -47,6 +46,6 @@ fn main() {
     }
     let adj = read_lines(&args[1]);
     let nouns = read_lines(&args[2]);
-    random_pair(&adj, &nouns,
-                |adjective, noun| println!("You are a{} {}", adjective, noun));
+    let (chosen_adj, chosen_noun) = random_pair(&adj, &nouns);
+    println!("You are a{} {}", chosen_adj, chosen_noun);
 }
