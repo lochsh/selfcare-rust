@@ -39,13 +39,13 @@ fn random_pair<'a, T>(foos: &'a[T], bars: &'a[T]) -> (&'a T, &'a T) {
 /// Takes two command line args: the paths to the file containing the
 /// adjectives and the file containing the nouns.
 fn main() {
-    let mut args: Vec<_> = env::args().collect();
-    if args.len() == 1 {
-        args.push("adjectives.txt".to_string());
-        args.push("nouns.txt".to_string());
-    }
-    let adj = read_lines(&args[1]);
-    let nouns = read_lines(&args[2]);
+    let args: Vec<String> = env::args().collect();
+
+    let adj_filename = args.get(1).map_or("adjectives.txt", |f| f);
+    let noun_filename = args.get(2).map_or("nouns.txt", |f| f);
+
+    let adj = read_lines(adj_filename);
+    let nouns = read_lines(noun_filename);
     let (chosen_adj, chosen_noun) = random_pair(&adj, &nouns);
     println!("You are a{} {}", chosen_adj, chosen_noun);
 }
